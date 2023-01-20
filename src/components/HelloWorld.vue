@@ -112,7 +112,7 @@
       ],
       importantLinks: [
         {
-          text: 'Documentation',
+          text: 'Documentation batata',
           href: 'https://vuetifyjs.com',
         },
         {
