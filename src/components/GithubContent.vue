@@ -2,7 +2,7 @@
   <v-container>
     <v-row>
       <v-col cols="12">
-				<span v-for="path in openFolders" :key="path"><v-btn @click="listFolderContent(path)"> / {{ path }} </v-btn></span>
+				<!-- <span v-for="path in openFolders" :key="path"><v-btn @click="listFolderContent(path)"> / {{ path }} </v-btn></span> -->
         <v-simple-table>
           <template v-slot:default>
             <thead>
@@ -27,7 +27,7 @@
 							</tr>
 							<div v-if="typeof previousPath == 'string'">
 								<v-btn class="ma-2" outlined color="pink" @click="goBack">
-                  Back
+                  Voltar
 								</v-btn>
 							</div>
             </tbody>
@@ -66,6 +66,7 @@ export default {
 		},
 		async listFolderContent(path) {
       this.loading = true;
+      console.log(this.repo.name)
       const contents = await api.PegaCaminho(
         this.repo.owner.login,
         this.repo.name,

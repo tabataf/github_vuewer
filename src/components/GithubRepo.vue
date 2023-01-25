@@ -1,7 +1,10 @@
 <template>
     <div class="titulo">
       <v-row class="text-center mt-10">
-        <v-col cols="6">
+        <v-col cols="2" v-if="user">
+        <v-avatar> <img :src="foto_perfil" ></v-avatar>
+        </v-col>
+        <v-col cols="5">
           <div>
           <v-autocomplete
           v-model="user"
@@ -15,16 +18,21 @@
           prepend-inner-icon="mdi-account"
           clearable
           >
-          <v-avatar  v-if="user" left>
-             <img img :src="foto_perfil">
-          </v-avatar>
+          <template v-slot:item="data">
+            <v-list-item-avatar>
+              <v-img :src="data.item.avatar_url"></v-img>
+            </v-list-item-avatar>
+            <v-list-item-content>
+              <v-list-item-title v-html="data.item.login"></v-list-item-title>
+            </v-list-item-content>
+          </template>
           </v-autocomplete>
         <!-- <v-avatar v-if="user">
         <img :src="foto_perfil">
         </v-avatar> -->
       </div>
         </v-col>
-        <v-col cols="6">
+        <v-col cols="5">
           <v-select
             v-model="repo"
             :items="repolist"
