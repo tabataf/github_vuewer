@@ -6,14 +6,14 @@
               <template v-slot:default>
                 <thead>
                   <tr>
-                    <th class="text-left">Number</th>
-                    <th class="text-left">Title</th>
+                    <th class="text-left">Arquivos</th>
+                    <!-- <th class="text-left">Title</th> -->
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="issue in issues" :key="issue.number">
-                    <td>{{ issue.number }}</td>
-                    <td>{{ issue.title }}</td>
+                  <tr v-for="file in files" :key="file.url">
+                    <!-- <td>{{ issue.number }}</td> -->
+                    <td>{{ file.name }}</td>
                   </tr>
                 </tbody>
               </template>
@@ -23,7 +23,6 @@
       <v-row>
         <v-col cols="12">
           <v-progress-circular indeterminate color="primary" v-if="loading"></v-progress-circular>
-          <v-btn color="primary" v-if="temmais" @click="listaIssues">MAIS</v-btn>
         </v-col>
       </v-row>
     </div>
@@ -36,32 +35,32 @@
     export default {
       props: ['repo'],
       data: () => ({
-        issues: [],
+        docs: [],
         loading: false,
         temmais: false,
         currentPage: 1
       }),
       methods: {
-        async listaIssues(){
+        async PegaArquivos(){
           this.loading = true
-          const maisissues = await api.listaIssues(this.repo.owner.login, this.repo.name, this.currentPage)
-          this.issues = this.issues.concat(maisissues)
-          this.currentPage++
-          this.loading = false
-          this.temmais = maisissues.length > 0
+          const files = await api.PegaArquivos(this.repo.owner.login , this.repo.name)
+          this.docs = this.files.concat(files)
+          // this.currentPage++
+          // this.loading = false
+          this.temmais = files.length > 0
         }
       },
       watch: {
         repo(){
-          this.issues = []
+          this.docs = []
           if (this.repo) {
-            this.temmais = false
-            this.currentPage = 1
-            this.listaIssues()
+            // this.temmais = false
+            // this.currentPage = 1
+            this.PegaArquivos()
           } else {
-            this.issues = []
-            this.temmais = false
-            this.currentPage = 1
+            this.docs = []
+            // this.temmais = false
+            // this.currentPage = 1
           }
         }
       }

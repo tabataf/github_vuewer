@@ -1,6 +1,6 @@
 <template>
     <div>
-      <v-row class="text-center">
+      <v-row class="text-center mt-10">
         <v-col cols="6">
           <v-autocomplete
           v-model="user"
