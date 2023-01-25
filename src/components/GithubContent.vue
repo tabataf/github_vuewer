@@ -2,7 +2,11 @@
   <v-container>
     <v-row>
       <v-col cols="12">
-				<!-- <span v-for="path in openFolders" :key="path"><v-btn @click="listFolderContent(path)"> / {{ path }} </v-btn></span> -->
+				<v-banner
+					v-if="actualPath"
+				>
+					📂 {{actualPath}}
+				</v-banner>
         <v-simple-table>
           <template v-slot:default>
             <thead>
@@ -55,6 +59,7 @@ export default {
     directoryContent: true,
     previousPath: null,
 		openFolders: [],
+    actualPath: null,
 	}),
 	methods: {
 		async listContent(){
@@ -65,6 +70,7 @@ export default {
 			this.loading = false
 		},
 		async listFolderContent(path) {
+      let gitPath = []
       this.loading = true;
       console.log(this.repo.name)
       const contents = await api.PegaCaminho(
@@ -72,6 +78,8 @@ export default {
         this.repo.name,
         path
       );
+      gitPath.push(this.repo.owner.login, this.repo.name, path)
+      this.actualPath = gitPath.join('/')
       let newPreviousPathList = path.split("/");
       newPreviousPathList.pop();
       const newPreviousPath = newPreviousPathList.join("/");
