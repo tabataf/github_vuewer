@@ -27,9 +27,6 @@
             </v-list-item-content>
           </template>
           </v-autocomplete>
-        <!-- <v-avatar v-if="user">
-        <img :src="foto_perfil">
-        </v-avatar> -->
       </div>
         </v-col>
         <v-col cols="5">
@@ -96,11 +93,4 @@
     }
   </script>
   <style>
-.titulo{
-  padding: 1rem;
-  font-weight: bold;
-  border: 4rem;
-  border-color: aqua;
-
-}
 </style>

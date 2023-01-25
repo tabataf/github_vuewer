@@ -7,12 +7,10 @@
                 <thead>
                   <tr>
                     <th class="text-left">Arquivos</th>
-                    <!-- <th class="text-left">Title</th> -->
                   </tr>
                 </thead>
                 <tbody>
                   <tr v-for="file in files" :key="file.url">
-                    <!-- <td>{{ issue.number }}</td> -->
                     <td>{{ file.name }}</td>
                   </tr>
                 </tbody>
@@ -45,8 +43,6 @@
           this.loading = true
           const files = await api.PegaArquivos(this.repo.owner.login , this.repo.name)
           this.docs = this.files.concat(files)
-          // this.currentPage++
-          // this.loading = false
           this.temmais = files.length > 0
         }
       },
@@ -54,13 +50,9 @@
         repo(){
           this.docs = []
           if (this.repo) {
-            // this.temmais = false
-            // this.currentPage = 1
             this.PegaArquivos()
           } else {
             this.docs = []
-            // this.temmais = false
-            // this.currentPage = 1
           }
         }
       }
