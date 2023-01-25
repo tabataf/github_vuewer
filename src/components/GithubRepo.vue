@@ -14,7 +14,14 @@
           color="pink darken-2"
           prepend-inner-icon="mdi-account"
           clearable
-        />
+          >
+          <v-avatar  v-if="user" left>
+             <img img :src="foto_perfil">
+          </v-avatar>
+          </v-autocomplete>
+        <!-- <v-avatar v-if="user">
+        <img :src="foto_perfil">
+        </v-avatar> -->
       </div>
         </v-col>
         <v-col cols="6">
@@ -48,11 +55,13 @@
         repolist: [],
         userloading: false,
         repoloading: false,
+        foto_perfil: null,
       }),
       methods: {
         procuraUsuariosGithub: debouncerdecorator(async function () { // atenção: não use ()=>{} aqui. vai quebrar o decorator
           this.userloading = true
           const data = await api.search_users(this.usersearch)
+          this.foto_perfil = this.userlist.map(user => user.avatar_url)
           this.userlist = data.items
           this.userloading = false
         }, 500),

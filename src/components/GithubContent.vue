@@ -1,18 +1,35 @@
 <template>
-   <v-container>
+  <v-container>
     <v-row>
       <v-col cols="12">
+				<span v-for="path in openFolders" :key="path"><v-btn @click="listFolderContent(path)"> / {{ path }} </v-btn></span>
         <v-simple-table>
           <template v-slot:default>
             <thead>
-              <tr class="docs">
-                <th class="text-left">Docs</th>
+              <tr>
+                <th class="text-left">Documents</th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="doc in docs" :key="doc.url">
-                <td>{{ doc.name }}</td>
-              </tr>
+							<tr v-for="content in contents" :key="content.name">
+								<td v-if="isDirectory(content.type)">
+                  <v-icon class="icon">mdi-folder </v-icon>
+                  <button
+                    @click="openDirectory(content.path)"
+                  >
+                    {{ content.name }}
+                  </button>
+								</td>
+								<td v-else>
+                  <v-icon class="icon">mdi-file-outline</v-icon>
+                  {{ content.name }}
+                </td>
+							</tr>
+							<div v-if="typeof previousPath == 'string'">
+								<v-btn class="ma-2" outlined color="pink" @click="goBack">
+                  Back
+								</v-btn>
+							</div>
             </tbody>
           </template>
         </v-simple-table>
@@ -20,40 +37,70 @@
     </v-row>
     <v-row>
       <v-col cols="12">
-        <v-progress-circular indeterminate class="text-center" color="primary" v-if="loading"></v-progress-circular>
+        <v-progress-circular indeterminate class="text-center" color="pink" v-if="loading"></v-progress-circular>
       </v-col>
     </v-row>
   </v-container>
 </template>
 
 <script>
-  import { api } from '~api'
+
+import { api } from '~api'
 
 export default {
 	props: ['repo'],
 	data: () => ({
-		docs: [],
+		contents: [],
 		loading: false,
+    directoryContent: true,
+    previousPath: null,
+		openFolders: [],
 	}),
 	methods: {
-		async getFiles(){
+		async listContent(){
 			this.loading = true
-			const files = await api.PegaArquivos( this.repo.owner.login, this.repo.name)
-		this.docs = this.docs.concat(files)
+			const contents = await api.PegaArquivos(this.repo.owner.login, this.repo.name)
+			this.contents = this.contents.concat(contents)
+			this.previousPath = null
 			this.loading = false
-		}
+		},
+		async listFolderContent(path) {
+      this.loading = true;
+      const contents = await api.PegaCaminho(
+        this.repo.owner.login,
+        this.repo.name,
+        path
+      );
+      let newPreviousPathList = path.split("/");
+      newPreviousPathList.pop();
+      const newPreviousPath = newPreviousPathList.join("/");
+      this.previousPath = newPreviousPath;
+      this.contents = this.contents.concat(contents);
+      this.loading = false;
+    },
+    isDirectory(type) {
+      return type == "dir";
+    },
+    openDirectory(path) {
+      this.contents = [];
+      this.listFolderContent(path);
+    },
+    goBack() {
+      if (this.previousPath == "") {
+        this.contents = [];
+        this.listContent();
+      } else {
+        this.contents = [];
+        this.listFolderContent(this.previousPath);
+      }
+    },
 	},
 	watch: {
 		repo(){
-			this.docs = []
-			this.getFiles()
+			this.contents = []
+			this.listContent()
 		}
 	}
 }
-</script>
-<style>
-.docs{
-  padding: 2rem;
-}
 
-</style>
+ </script>
