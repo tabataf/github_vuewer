@@ -1,7 +1,8 @@
 <template>
-    <div>
+    <div class="titulo">
       <v-row class="text-center mt-10">
         <v-col cols="6">
+          <div>
           <v-autocomplete
           v-model="user"
           label="Encontre seu usuário"
@@ -9,7 +10,12 @@
           :loading="userloading"
           :search-input.sync="usersearch"
           item-text="login"
+          solo
+          color="pink darken-2"
+          prepend-inner-icon="mdi-account"
+          clearable
         />
+      </div>
         </v-col>
         <v-col cols="6">
           <v-select
@@ -20,6 +26,10 @@
             label="Selecione o repositorio"
             return-object
             single-line
+            solo
+            prepend-inner-icon="mdi-emoticon"
+            color="pink darken-2"
+            clearable
           ></v-select>
         </v-col>
       </v-row>
@@ -68,3 +78,12 @@
       }
     }
   </script>
+  <style>
+.titulo{
+  padding: 1rem;
+  font-weight: bold;
+  border: 4rem;
+  border-color: aqua;
+
+}
+</style>

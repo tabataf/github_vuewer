@@ -22,7 +22,7 @@
       </v-row>
       <v-row>
         <v-col cols="12">
-          <v-progress-circular indeterminate color="primary" v-if="loading"></v-progress-circular>
+          <v-progress-circular indeterminate color="pink" v-if="loading"></v-progress-circular>
         </v-col>
       </v-row>
     </div>

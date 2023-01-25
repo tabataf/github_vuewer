@@ -5,7 +5,7 @@
         <v-simple-table>
           <template v-slot:default>
             <thead>
-              <tr>
+              <tr class="docs">
                 <th class="text-left">Docs</th>
               </tr>
             </thead>
@@ -51,3 +51,9 @@ export default {
 	}
 }
 </script>
+<style>
+.docs{
+  padding: 2rem;
+}
+
+</style>
